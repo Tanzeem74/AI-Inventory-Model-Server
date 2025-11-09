@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const app=express();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port=3000;
 
 app.use(cors());
@@ -32,6 +32,13 @@ async function run() {
     app.get('/latest-model',async(req,res)=>{
         const result=await modelCollection.find().sort({createdAt : 'desc'}).limit(6).toArray();
         res.send(result);
+    })
+    //catching single data
+    app.get('/models/:id',async(req,res)=>{
+        const {id}=req.params;
+        const result=await modelCollection.findOne({_id:new ObjectId(id)});
+        res.send(result);
+
     })
 
     //adding data by post
