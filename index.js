@@ -55,8 +55,15 @@ async function run() {
       const data = req.body;
       const objectId = new ObjectId(id);
       const query = { _id: objectId };
-      const update={$set:data}
-      const result = await modelCollection.updateOne(query,update);
+      const update = { $set: data }
+      const result = await modelCollection.updateOne(query, update);
+      res.send(result);
+    })
+
+    //deleting
+    app.delete('/models/:id', async (req, res) => {
+      const { id } = req.params;
+      const result = await modelCollection.deleteOne({ _id: new ObjectId(id) })
       res.send(result);
     })
 
